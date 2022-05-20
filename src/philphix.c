@@ -68,11 +68,34 @@ int main(int argc, char **argv) {
 /* Task 3 */
 void readDictionary(char *dictName) {
   // -- TODO --
-  fprintf(stderr, "You need to implement readDictionary\n");
+  // fprintf(stderr, "You need to implement readDictionary\n");
+  // HINT:
+  // 1. Open the specified file. If the file doesn't exist, 
+  // print a message to standard error and call exit(61) to cleanly exit the program.
+  FILE *fp;
+  fp = fopen(dictName, "r");
+  if (fp == NULL) {
+    fprintf(stderr, "open file doesn't exist\n");
+    exit(61);
+  }
+  // 2. Read each word, one at a time, and insert each key/value pair into the dictionary. 
+  // Since words can be any length, you probably need to read characters from the file 
+  // one at a time.
+  const int size = 1000;
+  while (1) {
+    char *key = malloc(sizeof(char *) * size);
+    char *value = malloc(sizeof(char *) * size);
+    if (fscanf(fp, "%s%s", key, value) == EOF) {
+      break;
+    }
+    if (strlen(key) && strlen(value)) insertData(dictionary, key, value);
+  }
+  fclose(fp);
 }
 
 /* Task 4 */
 void processInput() {
-  // -- TODO --
-  fprintf(stderr, "You need to implement processInput\n");
+// -- TODO --
+// fprintf(stderr, "You need to implement processInput\n");
+
 }
