@@ -81,10 +81,10 @@ void readDictionary(char *dictName) {
   // 2. Read each word, one at a time, and insert each key/value pair into the dictionary. 
   // Since words can be any length, you probably need to read characters from the file 
   // one at a time.
-  const int size = 1000;
+  const int size = 1000000;
   while (1) {
-    char *key = malloc(sizeof(char *) * size);
-    char *value = malloc(sizeof(char *) * size);
+    char *key = (char*) malloc(sizeof(char) * size);
+    char *value = (char*) malloc(sizeof(char) * size);
     if (fscanf(fp, "%s%s", key, value) == EOF) {
       break;
     }
@@ -95,7 +95,68 @@ void readDictionary(char *dictName) {
 
 /* Task 4 */
 void processInput() {
-// -- TODO --
-// fprintf(stderr, "You need to implement processInput\n");
+  // -- TODO --
+  // fprintf(stderr, "You need to implement processInput\n");
+  // HINT:
+  // 1. Read non-alphanumeric characters from stdin and print it unchanged to stdout. 
+  // To preserve non-alphanumeric characters, you probably need to read characters from 
+  // stdin one at a time.
+  // 2. Read words from stdin. If the word or a variation appears as a key in the dictionary, 
+  // print the replacement word (stored as the data corresponding to the key in the hash table) 
+  // to stdout. Remember to follow the order of checking variations: exact word, 
+  // then all but first character lowercase, then all lowercase.
+  const int size = 1000000;
+  char *word = (char*) malloc(sizeof(char) * size);
+  int idx = 0;
+  char c;
+  while ((c = getchar()) != EOF || strlen(word) != 0) {
+    if (isalpha(c) || isdigit(c)) {
+      *(word + idx++) = c;
+      continue;
+    }
 
+    *(word + idx) = '\0';
+    idx = 0;
+    // if the exact word appears as key in the dictionary
+    char *replace_word = (char *) findData(dictionary, word);
+    if (replace_word != NULL) {
+      printf("%s", replace_word);
+      if (c != EOF) printf("%c", c);
+      // free the pointer to word
+      memset(word, 0, sizeof(word));
+      continue;
+    }
+
+    // if all but first character lowercase appears 
+    char *tmp = (char*) malloc(sizeof(char) * size);
+    strcpy(tmp, word);
+    int i = 1;
+    for (; i < strlen(tmp); i++) {
+      *(tmp + i) = tolower(*(tmp + i));
+    }
+    if ((replace_word = findData(dictionary, tmp)) != NULL) {
+      printf("%s", replace_word);
+      if (c != EOF) printf("%c", c);
+      memset(word, 0, sizeof(word));
+      free(tmp);
+      continue;
+    }
+
+    // if all character lowercase appears
+    *tmp = tolower(*tmp);
+    if ((replace_word = findData(dictionary, tmp)) != NULL) {
+      printf("%s", replace_word);
+      if (c != EOF) printf("%c", c);
+      memset(word, 0, sizeof(word));
+      free(tmp);
+      continue;
+    }
+
+    printf("%s", word);
+    if (c != EOF) printf("%c", c);
+    memset(word, 0, sizeof(word));
+    free(tmp);
+  }
+
+  free(word);
 }

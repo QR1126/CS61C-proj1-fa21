@@ -1,7 +1,6 @@
 CC = gcc
 CFLAGS = -g -Wall -std=c99 -c
 LDFLAGS = -g -Wall
-CUNIT = -L/home/ff/cs61c/cunit/install/lib -I/home/ff/cs61c/cunit/install/include -lcunit
 CUNIT = -lcunit
 BUILD_DIR = ./build
 
@@ -28,7 +27,7 @@ clean :
 	rm -f $(BUILD_DIR)/*.o philphix unittest
 
 # Make sure you leave testpassedall as the last thing in this line. You can add your own custom tests before it.
-test: test_basic test_alphanumeric test_large_dict test_capitalization test_empty test_tabs_and_spaces test_numbers test_no_newline test_no_newline_longer test_binary test_long_word_input test_long_word_dict testpassedall
+test:test_basic test_alphanumeric test_large_dict test_capitalization test_empty test_tabs_and_spaces test_numbers test_no_newline test_no_newline_longer test_binary test_long_word_input test_long_word_dict testpassedall
 
 test_basic: clean philphix
 	touch tests/basic/test_basic.out
